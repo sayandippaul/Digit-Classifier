@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digit Recognizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-indigo-100 flex flex-col items-center justify-center min-h-screen">
+  <div class="bg-gray-100 p-8 rounded-2xl shadow-xl w-96 text-center">
+    <h1 class="text-3xl font-bold mb-6 text-indigo-600">🧠 Digit Recognizer</h1>
+    
+    <input id="fileInput" type="file" accept="image/*" 
+           class="mb-4 w-full text-sm text-gray-600" />
+    
+    <button id="predictBtn" 
+            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+      Predict Digit
+    </button>
+
+    <div id="loader" class="hidden mt-6">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-indigo-500 mx-auto"></div>
+      <p class="text-gray-500 mt-2">Analyzing...</p>
+    </div>
+
+    <div id="result" class="mt-6 hidden">
+      <p>Hmm! It Seems </p>
+
+      <p class="text-5xl font-bold text-indigo-600" id="digit"></p>
+      <br><br>
+      <p>Did You Know?</p>
+      <p class="mt-4 text-gray-700" id="fact"></p>
+    </div>
+  </div>
+
+  <script>
+    const predictBtn = document.getElementById("predictBtn");
+    const fileInput = document.getElementById("fileInput");
+    const loader = document.getElementById("loader");
+    const result = document.getElementById("result");
+    const digitEl = document.getElementById("digit");
+    const factEl = document.getElementById("fact");
+
+    predictBtn.onclick = async () => {
+      const file = fileInput.files[0];
+      if (!file) return alert("Please upload an image first!");
+
+      loader.classList.remove("hidden");
+      result.classList.add("hidden");
+
+      const formData = new FormData();
+      formData.append("file", file);
+      console.log(formData);
+      const res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        mode: 'cors', // ✅ Enable CORS mode
+        body: formData
+      });
+
+      
+      const data = await res.json();
+      loader.classList.add("hidden");
+      result.classList.remove("hidden");
+
+      if (data.error) {
+        digitEl.innerText = "❌ Error";
+        factEl.innerText = data.error;
+      } else {
+        digitEl.innerText = data.digit;
+        factEl.innerText = data.fact;
+      }
+    };
+  </script>
+</body>
+</html>

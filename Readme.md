@@ -1,7 +1,7 @@
-# 🧠 Digit Recognizer using CNN & PCA
+# 🧠 Digit Recognizer using Logistic Regression PCA
 
 This project is a **Digit Recognition Web App** that uses a
-**Convolutional Neural Network (CNN)** trained on the **MNIST dataset**.
+**Logistic Regression** trained on the **MNIST dataset**.
 The user uploads a handwritten digit image, and the model predicts a
 number from 0--9 with a corresponding historical or fun fact.
 
@@ -9,13 +9,12 @@ number from 0--9 with a corresponding historical or fun fact.
 
 ## 🚀 Features
 
--   Upload handwritten digit image (`.jpg`, `.png`, etc.).\
--   Loader animation during prediction.\
--   CNN model built using **TensorFlow/Keras**.\
+-   Upload handwritten digit image (`.jpg`, `.png`, etc.).
+-   Loader animation during prediction.
 -   Dimensionality reduction using **PCA (Principal Component
-    Analysis)**.\
--   Flask backend for prediction.\
--   Beautiful frontend built with **Tailwind CSS**.\
+    Analysis)**.
+-   Flask backend for prediction.
+-   Beautiful frontend built with **Tailwind CSS**.
 -   Hosted backend on **Render** and frontend on **GitHub Pages**.
 
 ------------------------------------------------------------------------
@@ -34,13 +33,12 @@ number from 0--9 with a corresponding historical or fun fact.
     while preserving maximum variance.
 -   This step makes the model faster and less prone to noise.
 
-### 3️⃣ CNN Prediction
+### 3️⃣ Logistic Regression Prediction
 
--   The processed image is fed into a **Convolutional Neural Network
-    (CNN)** trained on MNIST.
--   CNN layers extract spatial features (edges, shapes, etc.) and output
-    a probability distribution across digits 0--9.
--   The digit with the highest probability is the final prediction.
+- The preprocessed image (flattened to 784 features) is first **scaled** using `MinMaxScaler()` to bring all pixel values between 0 and 1.  
+- Then, **Principal Component Analysis (PCA)** reduces the dimensionality of the image data (for example, from 784 → 150 components), preserving the most significant variance.  
+- The reduced feature vector is passed to the **Logistic Regression** classifier, which learns linear decision boundaries between digits (0–9).  
+- The model outputs the **predicted digit** with the highest confidence score.
 
 ### 4️⃣ Historical Fact
 
@@ -79,28 +77,6 @@ model = Sequential([
 
 ------------------------------------------------------------------------
 
-## 🧱 Project Structure
-
-    Digit-Classifier/
-    │
-    ├── backend/
-    │   ├── app.py                # Flask server
-    │   ├── model.pkl             # Trained CNN + PCA model
-    │   ├── facts.json            # Fun facts for digits
-    │   └── requirements.txt
-    │
-    ├── frontend/
-    │   ├── index.html            # User interface
-    │   ├── style.css             # Tailwind CSS
-    │   └── script.js             # Fetch API and interaction logic
-    │
-    ├── dataset/
-    │   ├── mnist_train.csv
-    │   └── mnist_test.csv
-    │
-    └── README.md
-
-------------------------------------------------------------------------
 
 ## ⚙️ Tech Stack
 
@@ -108,7 +84,7 @@ model = Sequential([
   -------------- ----------------------------------------------
   **Frontend**   HTML, Tailwind CSS, JavaScript
   **Backend**    Flask (Python)
-  **ML Model**   CNN (TensorFlow + Keras), PCA (Scikit-learn)
+  **ML Model**   Logistic Regression, PCA (Scikit-learn)
   **Hosting**    Render (Backend), GitHub Pages (Frontend)
 
 ------------------------------------------------------------------------
@@ -143,9 +119,9 @@ model = Sequential([
 
 ## 🧮 Example Prediction Flow
 
-1.  User uploads a handwritten digit (e.g., "7").\
-2.  Image is sent to Flask backend (`/predict`).\
-3.  Flask processes the image → runs PCA → CNN predicts digit.\
+1.  User uploads a handwritten digit (e.g., "7").
+2.  Image is sent to Flask backend (`/predict`).
+3.  Flask processes the image → runs PCA → LR predicts digit.
 4.  Flask returns a response:
 
 ``` json
@@ -179,7 +155,7 @@ MIT License © 2025 Sayandip Paul
 
 ## 💡 Credits
 
--   **Dataset:** MNIST by Yann LeCun\
--   **Frameworks:** TensorFlow, Flask\
--   **Design:** Tailwind CSS\
+-   **Dataset:** MNIST by Yann LeCun
+-   **Frameworks:**  Flask
+-   **Design:** Tailwind CSS
 -   **Developer:** Sayandip Paul

@@ -50,7 +50,7 @@
       const formData = new FormData();
       formData.append("file", file);
       console.log(formData);
-      const res = await fetch("http://127.0.0.1:5000/predict", {
+      const res = await fetch("https://digit-classifier-rmj5.onrender.com/predict", {
         method: "POST",
         mode: 'cors', // ✅ Enable CORS mode
         body: formData
